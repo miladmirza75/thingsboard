@@ -21,6 +21,7 @@ import QueueManagementPage from '@/pages/QueueManagementPage'
 import DeviceProfilesPage from '@/pages/DeviceProfilesPage'
 import AssetProfilesPage from '@/pages/AssetProfilesPage'
 import EntityViewsPage from '@/pages/EntityViewsPage'
+import OtaPackagesPage from '@/pages/OtaPackagesPage'
 import GeneralSettingsPage from '@/pages/settings/GeneralSettingsPage'
 import MailServerPage from '@/pages/settings/MailServerPage'
 import SmsProviderPage from '@/pages/settings/SmsProviderPage'
@@ -162,6 +163,16 @@ function App() {
         element={
           <RoleBasedRoute allowedRoles={['TENANT_ADMIN', 'CUSTOMER_USER']}>
             <EntityViewsPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      {/* OTA Packages - TENANT_ADMIN only */}
+      <Route
+        path="/ota-packages"
+        element={
+          <RoleBasedRoute allowedRoles={['TENANT_ADMIN']}>
+            <OtaPackagesPage />
           </RoleBasedRoute>
         }
       />
