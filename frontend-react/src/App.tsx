@@ -10,12 +10,21 @@ import CustomersPage from '@/pages/CustomersPage'
 import UsersPage from '@/pages/UsersPage'
 import TenantsPage from '@/pages/TenantsPage'
 import AlarmsPage from '@/pages/AlarmsPage'
-import RuleChainsPage from '@/pages/RuleChainsPage'
-import RuleChainDesignerPage from '@/pages/RuleChainDesignerPage'
+import RuleChainListPage from '@/pages/rulechains/RuleChainListPage'
+import RuleChainEditorPage from '@/pages/rulechains/RuleChainEditorPage'
 import GatewaysPage from '@/pages/GatewaysPage'
 import GatewayDetailsPage from '@/pages/GatewayDetailsPage'
 import WidgetsBundlesPage from '@/pages/WidgetsBundlesPage'
 import AuditLogsPage from '@/pages/AuditLogsPage'
+import TenantProfilesPage from '@/pages/TenantProfilesPage'
+import QueueManagementPage from '@/pages/QueueManagementPage'
+import DeviceProfilesPage from '@/pages/DeviceProfilesPage'
+import AssetProfilesPage from '@/pages/AssetProfilesPage'
+import EntityViewsPage from '@/pages/EntityViewsPage'
+import GeneralSettingsPage from '@/pages/settings/GeneralSettingsPage'
+import MailServerPage from '@/pages/settings/MailServerPage'
+import SmsProviderPage from '@/pages/settings/SmsProviderPage'
+import SecuritySettingsPage from '@/pages/settings/SecuritySettingsPage'
 import { selectIsAuthenticated, selectCurrentUser } from '@/store/auth/authSlice'
 
 type UserRole = 'SYS_ADMIN' | 'TENANT_ADMIN' | 'CUSTOMER_USER'
@@ -127,6 +136,36 @@ function App() {
         }
       />
 
+      {/* Device Profiles - TENANT_ADMIN only */}
+      <Route
+        path="/device-profiles"
+        element={
+          <RoleBasedRoute allowedRoles={['TENANT_ADMIN']}>
+            <DeviceProfilesPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      {/* Asset Profiles - TENANT_ADMIN only */}
+      <Route
+        path="/asset-profiles"
+        element={
+          <RoleBasedRoute allowedRoles={['TENANT_ADMIN']}>
+            <AssetProfilesPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      {/* Entity Views - TENANT_ADMIN and CUSTOMER_USER */}
+      <Route
+        path="/entity-views"
+        element={
+          <RoleBasedRoute allowedRoles={['TENANT_ADMIN', 'CUSTOMER_USER']}>
+            <EntityViewsPage />
+          </RoleBasedRoute>
+        }
+      />
+
       {/* Alarms - TENANT_ADMIN and CUSTOMER_USER */}
       <Route
         path="/alarms"
@@ -177,21 +216,24 @@ function App() {
 
       {/* Rule Chains - TENANT_ADMIN only */}
       <Route
-        path="/rule-chains"
+        path="/rulechains"
         element={
           <RoleBasedRoute allowedRoles={['TENANT_ADMIN']}>
-            <RuleChainsPage />
+            <RuleChainListPage />
           </RoleBasedRoute>
         }
       />
       <Route
-        path="/rule-chains/:id"
+        path="/rulechains/:ruleChainId"
         element={
           <RoleBasedRoute allowedRoles={['TENANT_ADMIN']}>
-            <RuleChainDesignerPage />
+            <RuleChainEditorPage />
           </RoleBasedRoute>
         }
       />
+      {/* Legacy route redirects */}
+      <Route path="/rule-chains" element={<Navigate to="/rulechains" replace />} />
+      <Route path="/rule-chains/:id" element={<Navigate to="/rulechains/:id" replace />} />
 
       {/* Widget Library - TENANT_ADMIN only */}
       <Route
@@ -223,7 +265,59 @@ function App() {
         }
       />
 
-      {/* More routes will be added here */}
+      {/* Tenant Profiles - SYS_ADMIN only */}
+      <Route
+        path="/tenant-profiles"
+        element={
+          <RoleBasedRoute allowedRoles={['SYS_ADMIN']}>
+            <TenantProfilesPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      {/* Queue Management - SYS_ADMIN only */}
+      <Route
+        path="/queues"
+        element={
+          <RoleBasedRoute allowedRoles={['SYS_ADMIN']}>
+            <QueueManagementPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      {/* System Settings Pages - SYS_ADMIN only */}
+      <Route
+        path="/settings/general"
+        element={
+          <RoleBasedRoute allowedRoles={['SYS_ADMIN']}>
+            <GeneralSettingsPage />
+          </RoleBasedRoute>
+        }
+      />
+      <Route
+        path="/settings/mail-server"
+        element={
+          <RoleBasedRoute allowedRoles={['SYS_ADMIN']}>
+            <MailServerPage />
+          </RoleBasedRoute>
+        }
+      />
+      <Route
+        path="/settings/sms-provider"
+        element={
+          <RoleBasedRoute allowedRoles={['SYS_ADMIN']}>
+            <SmsProviderPage />
+          </RoleBasedRoute>
+        }
+      />
+      <Route
+        path="/settings/security"
+        element={
+          <RoleBasedRoute allowedRoles={['SYS_ADMIN']}>
+            <SecuritySettingsPage />
+          </RoleBasedRoute>
+        }
+      />
     </Routes>
   )
 }
