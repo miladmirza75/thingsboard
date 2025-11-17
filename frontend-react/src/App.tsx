@@ -20,6 +20,7 @@ import TenantProfilesPage from '@/pages/TenantProfilesPage'
 import QueueManagementPage from '@/pages/QueueManagementPage'
 import DeviceProfilesPage from '@/pages/DeviceProfilesPage'
 import AssetProfilesPage from '@/pages/AssetProfilesPage'
+import EntityViewsPage from '@/pages/EntityViewsPage'
 import GeneralSettingsPage from '@/pages/settings/GeneralSettingsPage'
 import MailServerPage from '@/pages/settings/MailServerPage'
 import SmsProviderPage from '@/pages/settings/SmsProviderPage'
@@ -151,6 +152,16 @@ function App() {
         element={
           <RoleBasedRoute allowedRoles={['TENANT_ADMIN']}>
             <AssetProfilesPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      {/* Entity Views - TENANT_ADMIN and CUSTOMER_USER */}
+      <Route
+        path="/entity-views"
+        element={
+          <RoleBasedRoute allowedRoles={['TENANT_ADMIN', 'CUSTOMER_USER']}>
+            <EntityViewsPage />
           </RoleBasedRoute>
         }
       />
